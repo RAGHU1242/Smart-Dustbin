@@ -4,7 +4,7 @@ It uses sensor technology for hands-free operation, automatically opening and cl
 
 # Components 
 
-Ultrasonic Sensor 
-Arduino Uno
-Servo motor 
-Jumper wires 
+Ultrasonic Sensor ,
+Arduino Uno ,
+Servo motor and 
+Jumper wires .
