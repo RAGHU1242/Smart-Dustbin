@@ -2,4 +2,9 @@
 
 It uses sensor technology for hands-free operation, automatically opening and closing its lid when it detects trash or a hand near it
 
-# Sensors 
+# Components 
+
+Ultrasonic Sensor 
+Arduino Uno
+Servo motor 
+Jumper wires 
