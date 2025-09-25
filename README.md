@@ -30,60 +30,42 @@ Perfect for **beginners in Arduino and electronics**!
 ## 💻 Arduino Code
 
 ```cpp
-#include <Servo.h>
-
-// Define sensor pins
-#define ECHO_PIN 9
-#define TRIG_PIN 10
-
-// Define servo pin
-#define SERVO_PIN 6
-
-// Create servo object
-Servo myservo;
-
-// Variables
-long duration;
-int distance;
-
-void setup() {
-  // Set up sensor pins
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-
-  // Attach servo to pin and set to initial position (closed)
-  myservo.attach(SERVO_PIN);
-  myservo.write(0); // Closed position
-
-  // Start serial communication for debugging
-  Serial.begin(9600);
+#include Servo.h    Include servo library
+Servo servoMotor;     
+int trigPin = 2;    
+int echoPin = 3;   
+int servoPin = 9; 
+long duration, distance;   
+void setup() {       
+    servoMotor.attach(servoPin);  
+    pinMode(trigPin, OUTPUT);  
+    pinMode(echoPin, INPUT);  
+    servoMotor.write(10);          Close lid on power on
+    delay(2000);
+    servoMotor.detach();
+} 
+void measureDistance()
+ {  
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(5);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(15);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration  2)  29.1;     Calculate distance
+}
+void loop() { 
+    measureDistance();    Measure distance   
+    if (distance  8) 
+{
+        servoMotor.attach(servoPin);
+        delay(1);
+        servoMotor.write(80);   Open the lid
+        delay(4000);        Wait for 4 seconds
+        servoMotor.write(170);     Close the lid
+        delay(4000);
+        servoMotor.detach();     Detach the servo
+    }
+        delay(50);   Delay between measurements
 }
 
-void loop() {
-  // Clear the trigger pin
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-
-  // Send a 10µs pulse
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-
-  // Read echo time
-  duration = pulseIn(ECHO_PIN, HIGH);
-
-  // Convert to distance (cm)
-  distance = duration * 0.034 / 2;
-
-  // Print distance to Serial Monitor
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
-
-  // If object is within 20cm → open lid
-  if (distance <= 20) {
-    myservo.write(90);  // Open lid
-    delay(2000);        // Stay open for 2s
-    myservo.write(0);   // Close lid
-  }
-}
